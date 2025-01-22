@@ -7,20 +7,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WordScape.Models;
 using WordScapeAPI.Data;
+using static System.Reflection.Metadata.BlobBuilder;
 
 namespace WordScapeAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BookController : ControllerBase
+    public class BookController(APIContext context) : ControllerBase
     {
-        private readonly APIContext _context;
-
-        
-        public BookController(APIContext context)
-        {
-            _context = context;
-        }
+        private readonly APIContext _context = context;
 
         // GET: api/Book
         [HttpGet]
@@ -31,7 +26,7 @@ namespace WordScapeAPI.Controllers
 
         // GET: api/Book/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Book>> GetBook(int id)
+        public async Task<ActionResult<Book>> GetBookById(int id)
         {
             var book = await _context.Books.FindAsync(id);
 
@@ -43,6 +38,14 @@ namespace WordScapeAPI.Controllers
             return book;
         }
 
+        //GET: api/Book/Genre/9
+        [HttpGet]
+        [Route("/Genre/{genre}")]
+        public async Task<ActionResult<IEnumerable<Book>>> GetBooksByGenre(Genre genre)
+        {
+            return await _context.Books.Where(b => b.Genre == genre).ToListAsync();
+        }
+
         // PUT: api/Book/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutBook(int id, Book book)
@@ -50,7 +53,7 @@ namespace WordScapeAPI.Controllers
             if (id != book.BookID)
             {
                 return BadRequest();
-            }
+            }   
 
             _context.Entry(book).State = EntityState.Modified;
 
@@ -80,7 +83,7 @@ namespace WordScapeAPI.Controllers
             _context.Books.Add(book);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetBook", new { id = book.BookID }, book);
+            return CreatedAtAction("GetBookById", new { id = book.BookID }, book);
         }
 
         // DELETE: api/Book/5
