@@ -14,7 +14,7 @@ namespace WordScape.Models
         [MaxLength(500)]
         public string Description { get; set; }
         [Required]
-        public Genre Genre { get; set; }
+        public Genre genre{ get; set; }
         [Required]
         public DateTime PublishedDate { get; set; }
         [Required]

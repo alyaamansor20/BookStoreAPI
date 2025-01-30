@@ -14,6 +14,7 @@ namespace WordScapeAPI.Data
         {
         }
 
+        public Array Categories = Enum.GetValues(typeof(Genre));
         public virtual DbSet<Book> Books { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<Order> Orders { get; set; }

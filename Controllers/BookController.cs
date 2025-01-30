@@ -13,9 +13,18 @@ namespace WordScapeAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BookController(APIContext context) : ControllerBase
+    public class BookController (APIContext context) : ControllerBase
     {
         private readonly APIContext _context = context;
+
+
+        [HttpGet]
+        [Route("/Genre")]
+        //GET: api/Book/Genre
+        public Array GetCategories()
+        {
+            return Enum.GetNames(typeof(Genre)).ToArray();
+        }
 
         // GET: api/Book
         [HttpGet]
@@ -43,7 +52,7 @@ namespace WordScapeAPI.Controllers
         [Route("/Genre/{genre}")]
         public async Task<ActionResult<IEnumerable<Book>>> GetBooksByGenre(Genre genre)
         {
-            return await _context.Books.Where(b => b.Genre == genre).ToListAsync();
+            return await _context.Books.Where(b => b.genre == genre).ToListAsync();
         }
 
         // PUT: api/Book/5

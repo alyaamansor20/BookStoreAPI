@@ -1,7 +1,14 @@
-﻿namespace WordScape.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WordScape.Models
 {
     public enum Genre
     {
+        //[Key]
+        //int GenreId;
+        //[Required]
+        //string GenreName;
+        
         Fiction,
         Science_Fiction,
         Short_Story,
@@ -18,5 +25,6 @@
         Poetry, 
         Humanities,
         Science
+        
     }
 }
